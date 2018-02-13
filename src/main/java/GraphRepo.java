@@ -29,8 +29,8 @@ class GraphRepo {
         JanusGraphManagement janusGraphManagement = graph.openManagement();
         makeSchema(janusGraphManagement);
         buildIndices(janusGraphManagement);
-
         janusGraphManagement.commit();
+
         createArticleVertices(graph);
         createLinkEdges(graph);
     }
@@ -38,12 +38,12 @@ class GraphRepo {
     private void createLinkEdges(JanusGraph graph) {
         List<List<String>> articleLinks;
         try {
-            articleLinks = IO.readFile(config.linksFile);
+            articleLinks = IO.readFile(config.get("data.links.file"));
         } catch (IOException e) {
-            throw new IllegalArgumentException("Error occurred in reading file " + config.linksFile + ": " + e);
+            throw new IllegalArgumentException("Error occurred in reading file " + config.get("data.links.file") + ": " + e);
         }
 
-        articleLinks = articleLinks.stream().skip(config.skipLinks).limit(config.limit).collect(Collectors.toList());
+        articleLinks = articleLinks.stream().skip(0).limit(500).collect(Collectors.toList());
         for (List<String> articleLink : articleLinks) {
             String sourceArticle = articleLink.get(0);
             String linkedArticle = articleLink.get(1);
@@ -77,9 +77,9 @@ class GraphRepo {
     private Set<String> articleNames() {
         List<List<String>> articleData;
         try {
-            articleData = IO.readFile(config.articlesFile);
+            articleData = IO.readFile(config.get("data.articles.file"));
         } catch (IOException e) {
-            throw new IllegalArgumentException("Error occurred in reading file " + config.articlesFile + ": " + e);
+            throw new IllegalArgumentException("Error occurred in reading file " + config.get("data.articles.file") + ": " + e);
         }
         return articleData.stream().map(row -> row.get(0)).collect(Collectors.toSet());
     }
@@ -103,6 +103,6 @@ class GraphRepo {
 
     private String getConfigPath() {
         ClassLoader classLoader = getClass().getClassLoader();
-        return new File(classLoader.getResource(config.janusGraphPropertiesFile).getFile()).getPath();
+        return new File(classLoader.getResource(config.get("janusGraph.properties.file")).getFile()).getPath();
     }
 }

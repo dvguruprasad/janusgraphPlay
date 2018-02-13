@@ -1,4 +1,3 @@
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -7,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WikispeediaTest {
 
-    private final GraphRepo graphRepo = new GraphRepo(new WikispeediaConfig());
+    private final GraphRepo graphRepo = new GraphRepo(WikispeediaConfig.create());
 
-    @BeforeClass
-    void initialize() throws InterruptedException {
+    @Test
+    void setup() throws InterruptedException {
         graphRepo.setupGraph();
     }
 

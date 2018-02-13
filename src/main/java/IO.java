@@ -10,7 +10,7 @@ import static java.util.Arrays.asList;
 
 public class IO {
     static List<List<String>> readFile(final String fileName) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("/Users/gvenkate/datasets/wikispeedia_paths-and-graph/" + fileName));
+        BufferedReader reader = new BufferedReader(new FileReader(WikispeediaConfig.create().get("wikispeedia.dataset.path") + fileName));
         List<List<String>> data = new ArrayList<>();
         String row;
         while ((row = reader.readLine()) != null) {
@@ -18,7 +18,7 @@ public class IO {
             if(row.isEmpty() || row.startsWith("#"))
                 continue;
             List<String> strings = asList(row.split("\\t"));
-            strings.stream().map(s -> {
+            strings = strings.stream().map(s -> {
                 try {
                     return java.net.URLDecoder.decode(s, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
