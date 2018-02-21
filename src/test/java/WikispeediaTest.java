@@ -1,16 +1,17 @@
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class WikispeediaTest {
 
     private final GraphRepo graphRepo = new GraphRepo(WikispeediaConfig.create());
 
-    @Test
+    @BeforeEach
     void setup() throws InterruptedException {
-        graphRepo.setupGraph();
+        graphRepo.setupGraph();        
     }
 
     @Test
