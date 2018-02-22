@@ -1,5 +1,7 @@
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 class WikispeediaConfig {
@@ -20,6 +22,14 @@ class WikispeediaConfig {
         }
         return new WikispeediaConfig(properties);
     }
+
+    public String getConfigPath() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL fileURI = classLoader.getResource(get("janusGraph.properties.file"));
+        assert fileURI != null;
+        return new File(fileURI.getFile()).getPath();
+    }
+
 
     public String get(String key){
         return properties.getProperty(key);

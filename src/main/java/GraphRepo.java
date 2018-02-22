@@ -25,7 +25,7 @@ class GraphRepo {
     }
 
     public void setupGraph() throws InterruptedException {
-        JanusGraph graph = getGraph();
+        JanusGraph graph = load();
         JanusGraphManagement janusGraphManagement = graph.openManagement();
         makeSchema(janusGraphManagement);
         buildIndices(janusGraphManagement);
@@ -85,7 +85,7 @@ class GraphRepo {
     }
 
     public List<String> linksFrom(String articleName) {
-        JanusGraph graph = getGraph();
+        JanusGraph graph = load();
         Vertex sourceVertex = graph.traversal().V().has(ARTICLE_NAME, articleName).next();
         Iterator<Edge> edges = sourceVertex.edges(Direction.OUT);
         List<String> linksFromSourceVertex = new ArrayList<>();
@@ -97,12 +97,7 @@ class GraphRepo {
         return linksFromSourceVertex;
     }
 
-    private JanusGraph getGraph() {
-        return JanusGraphFactory.open(getConfigPath());
-    }
-
-    private String getConfigPath() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        return new File(classLoader.getResource(config.get("janusGraph.properties.file")).getFile()).getPath();
+    private JanusGraph load() {
+        return JanusGraphFactory.open(config.getConfigPath());
     }
 }
