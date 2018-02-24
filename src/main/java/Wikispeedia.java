@@ -10,4 +10,8 @@ public class Wikispeedia {
     public List<String> linksFrom(String articleName) {
         return graphRepo.linksFrom(articleName);
     }
+
+    public List<String> articlesBelongingTo(String category) {
+        return graphRepo.articlesBelongingTo(category);
+    }
 }
