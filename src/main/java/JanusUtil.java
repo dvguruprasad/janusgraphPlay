@@ -1,3 +1,5 @@
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphException;
 import org.janusgraph.core.schema.JanusGraphManagement;
@@ -22,4 +24,20 @@ public class JanusUtil {
             }
         }
     }
+
+    /*
+     *
+     * deleteAllVertices removes all the vertices from the graph
+     *
+     */
+    public void deleteAllVertices(JanusGraph graph) {
+        GraphTraversal<Vertex, Vertex> v = graph.traversal().V();
+        while (v.hasNext()) {
+            Vertex next = v.next();
+            next.remove();
+        }
+        graph.tx().commit();
+        graph.tx().close();
+    }
+
 }
